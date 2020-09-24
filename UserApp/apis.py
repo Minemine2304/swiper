@@ -1,8 +1,9 @@
 from django.http import JsonResponse
-
+from django.core.cache import cache
 
 # Create your views here.
 from UserApp.logics import send_vcode
+from UserApp.models import User
 
 
 def ferch_vcode(request):
@@ -11,11 +12,29 @@ def ferch_vcode(request):
     if send_vcode(phonenum):
         return JsonResponse({'code':0,'data':None})
     else:
-        return JsonResponse({'code': 1000, 'data': None})
+        return JsonResponse({'code': 1000, 'data': '验证码发送失败'})
 
 def sumbit_vcode(request):
     '''提交验证码，执行登陆注册'''
-    return JsonResponse()
+    phonenum = request.POST.get('phonenum')
+    vcode = request.POST.get('vcode')
+
+    key = 'Vcode-%s' % phonenum
+    cached_vcode = cache.get(key)
+
+    if vcode and vcode == cached_vcode:
+        try:
+            user = User.objects.get(phonenum=phonenum) #从数据库获取用户
+        except User.DoesNotExist:
+    #         如果用户不存在，则执行注册流程注册
+            user = User.objects.create(phonenum=phonenum,nickname=phonenum)
+
+    #     在session中记录用户登陆的状态
+        request.session['uid'] = user.id
+
+        return JsonResponse({'code': 0,'data': user.to_dict()})
+    else:
+        return JsonResponse({'code':1001,'data':'验证码错误'})
 
 def show_profile(request):
     '''查看个人资料'''
