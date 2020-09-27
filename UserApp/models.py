@@ -19,7 +19,7 @@ class User(models.Model):
         ('沈阳', '沈阳'),
     )
     phonenum = models.CharField(max_length=16, unique=True, verbose_name='手机号')
-    nickname = models.CharField(max_length=20, db_index=True, verbose_name='昵称'),
+    nickname = models.CharField(max_length=20, db_index=True, verbose_name='昵称')
     gender = models.CharField(max_length=10, choices=GENDERS, verbose_name='性别')
     birthday = models.DateField(default='2002-01-01', verbose_name='出生日')
     avatar = models.CharField(max_length=256, verbose_name='个人形象')

@@ -14,7 +14,7 @@ def send_sms(phonenum, vcode):
         'appid': cfg.SD_APPID,  # APPID
         'to': phonenum,  # 手机号
         'project': cfg.SD_PROJECT,  # 短信模板的ID
-        'vars': json.dumps({'vcode': vcode}),
+        'vars': json.dumps({'code': vcode}),
         'timestamp': int(time.time()),
         'sign_type': cfg.SD_SIGN_TYPE,
     }

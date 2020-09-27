@@ -38,7 +38,7 @@ def sumbit_vcode(request):
 
 def show_profile(request):
     '''查看个人资料'''
-    return JsonResponse()
+    return JsonResponse({'code':0,'data':'测试成功'})
 
 def update_profile(request):
     '''更新个人资料'''
