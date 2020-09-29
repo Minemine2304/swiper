@@ -1,9 +1,11 @@
+
+
 from django.http import JsonResponse
 from django.core.cache import cache
 
 # Create your views here.
 from UserApp.logics import send_vcode
-from UserApp.models import User
+from UserApp.models import User, Profile
 
 
 def ferch_vcode(request):
@@ -38,7 +40,9 @@ def sumbit_vcode(request):
 
 def show_profile(request):
     '''查看个人资料'''
-    return JsonResponse({'code':0,'data':'测试成功'})
+    uid = request.session['uid']
+    profile, _ = Profile.objects.get_or_create(id=uid)
+    return JsonResponse({'code':0,'data': profile.to_dict()})
 
 def update_profile(request):
     '''更新个人资料'''

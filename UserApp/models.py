@@ -47,9 +47,9 @@ class User(models.Model):
 class Profile(models.Model):
     '''用户的交友资料'''
     dating_location = models.CharField(max_length=10, choices=User.LOCATIONS,
-                                       default='上海',verbose_name='目标城市')
+                                       default='上海', verbose_name='目标城市')
     dating_gender = models.CharField(max_length=10, choices=User.GENDERS,
-                                     default='female',verbose_name='匹配的性别')
+                                     default='female', verbose_name='匹配的性别')
 
     min_distance = models.IntegerField(default=1, verbose_name='最小查找范围')
     max_distance = models.IntegerField(default=50, verbose_name='最大查找范围')
@@ -60,3 +60,17 @@ class Profile(models.Model):
     vibration = models.BooleanField(default=True, verbose_name='开启震动')
     only_matched = models.BooleanField(default=True, verbose_name='不让陌生人看我的相册')
     auto_play = models.BooleanField(default=True, verbose_name='自动播放视频')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'dating_location': self.dating_location,
+            'dating_gender': self.dating_gender,
+            'min_distance': self.min_distance,
+            'max_distance': self.max_distance,
+            'min_dating_age': self.min_dating_age,
+            'max_dating_age': self.max_dating_age,
+            'vibration': self.vibration,
+            'only_matched': self.only_matched,
+            'auto_play': self.auto_play,
+        }
